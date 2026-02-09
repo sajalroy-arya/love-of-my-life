@@ -2,254 +2,402 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Journey ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- RESET & BASICS --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        /* --- 1. CORE STYLES --- */
+        :root {
+            --primary: #ff4d6d;
+            --bg-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --glass: rgba(255, 255, 255, 0.25);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+            --shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
         
         body {
             margin: 0;
             overflow: hidden;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            font-family: 'Quicksand', sans-serif;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #4a4a4a;
         }
 
-        /* --- BACKGROUND ANIMATION --- */
-        #heart-canvas {
+        /* --- 2. BACKGROUND ANIMATION --- */
+        #particles {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none;
         }
 
-        /* --- GLASS CARD DESIGN --- */
+        /* --- 3. THE CARD SYSTEM --- */
         .card {
-            background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
             border-radius: 30px;
-            padding: 40px;
+            padding: 30px;
             width: 90%;
-            max-width: 500px;
+            max-width: 450px;
             text-align: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 10;
-            display: none; /* Hidden by default */
-            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow);
+            position: absolute;
+            opacity: 0;
+            transform: scale(0.9);
+            pointer-events: none;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .card.active { display: block; }
+        .card.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+            z-index: 10;
+        }
 
+        /* Scrollbar hide */
+        .card::-webkit-scrollbar { display: none; }
+
+        /* --- 4. TYPOGRAPHY & UI --- */
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: #d63384;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 2.8rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
         }
 
-        p { color: #555; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6; }
+        p { font-size: 1.1rem; margin-bottom: 20px; line-height: 1.5; }
 
-        /* --- INPUT FIELDS --- */
-        input {
-            width: 80%;
-            padding: 15px;
-            border-radius: 50px;
-            border: none;
-            outline: none;
-            background: rgba(255,255,255,0.8);
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        /* --- BUTTONS --- */
         .btn {
-            background: #d63384;
+            background: var(--primary);
             color: white;
-            padding: 12px 40px;
+            padding: 12px 35px;
             border-radius: 50px;
             border: none;
-            font-weight: bold;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            transition: transform 0.2s;
+            display: inline-block;
             margin-top: 10px;
         }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(214, 51, 132, 0.4); }
+        .btn:active { transform: scale(0.95); }
 
-        /* --- INTERACTIVE ELEMENTS --- */
-        .reason-item {
-            background: rgba(255,255,255,0.6);
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: 0.3s;
+        input {
+            width: 80%; padding: 12px; border-radius: 50px;
+            border: none; outline: none; background: rgba(255,255,255,0.8);
+            text-align: center; font-size: 1.1rem; margin-bottom: 15px;
         }
-        .reason-item:hover { background: white; transform: scale(1.02); }
 
-        .bucket-list { text-align: left; padding-left: 20px; }
-        .bucket-list li { margin: 10px 0; list-style: none; }
-        .bucket-list input { width: auto; margin-right: 10px; transform: scale(1.5); }
+        /* --- 5. PUZZLE: MEMORY GAME --- */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .memory-card {
+            background: white;
+            height: 80px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .memory-card.flipped { background: #ffe0e6; transform: rotateY(180deg); }
+        .memory-card.matched { background: var(--primary); color: white; opacity: 0.5; pointer-events: none; }
+        .hidden-content { display: none; } /* Hide emoji until flip */
+        .memory-card.flipped .hidden-content { display: block; transform: rotateY(180deg); }
 
-        /* --- THE RUNAWAY BUTTON --- */
+        /* --- 6. QUIZ STYLES --- */
+        .quiz-option {
+            background: rgba(255,255,255,0.6);
+            margin: 8px 0; padding: 12px;
+            border-radius: 15px; cursor: pointer;
+            transition: 0.3s; font-weight: 600;
+        }
+        .quiz-option:hover { background: white; transform: translateX(5px); }
+
+        /* --- 7. TIMELINE STYLES --- */
+        .timeline { text-align: left; border-left: 2px solid var(--primary); padding-left: 20px; margin-left: 10px; }
+        .event { margin-bottom: 20px; position: relative; }
+        .event::before {
+            content: '❤️'; position: absolute; left: -29px; top: 0;
+            background: #fff; border-radius: 50%; padding: 2px;
+        }
+        .date { font-size: 0.85rem; color: var(--primary); font-weight: bold; }
+
+        /* --- 8. RUNAWAY BUTTON --- */
         .btn-group { position: relative; height: 60px; margin-top: 20px; }
         .btn-yes { position: absolute; left: 20%; transform: translateX(-50%); }
-        .btn-no { position: absolute; left: 60%; background: #888; transform: translateX(-50%); transition: all 0.1s ease; }
+        .btn-no { position: absolute; left: 60%; background: #a5a5a5; transform: translateX(-50%); transition: all 0.1s ease; }
 
-        /* --- PHOTO GALLERY --- */
-        .photo-stack { position: relative; height: 250px; margin: 20px 0; }
-        .photo {
-            position: absolute;
-            width: 180px;
-            height: 220px;
-            background: white;
-            padding: 10px;
-            padding-bottom: 40px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            border-radius: 5px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.5s ease;
+        /* --- 9. ERROR ANIMATION --- */
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
         }
-        .photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
-        .photo:nth-child(1) { transform: translate(-50%, -50%) rotate(-10deg); z-index: 1; }
-        .photo:nth-child(2) { transform: translate(-50%, -50%) rotate(5deg); z-index: 2; }
-        .photo:nth-child(3) { transform: translate(-50%, -50%) rotate(-5deg); z-index: 3; }
-        .photo:hover { z-index: 10; transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
 
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            80% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .error { color: red; font-size: 0.9rem; margin-top: -15px; margin-bottom: 10px; display: none; }
     </style>
 </head>
 <body>
 
-    <canvas id="heart-canvas"></canvas>
+    <canvas id="particles"></canvas>
 
-    <div id="card-login" class="card active">
-        <h1>Hey You.</h1>
-        <p>This area is restricted. Prove it's really you.</p>
-        <p style="font-size: 0.9rem; margin-bottom: 10px;">When did it all start? (YYYY)</p>
-        <input type="text" id="passcode" placeholder="Enter the year..." maxlength="4">
-        <div id="error-msg" class="error">Wrong answer. Try again.</div>
-        <button class="btn" onclick="checkPasscode()">Unlock My Heart</button>
-    </div>
-
-    <div id="card-story" class="card">
-        <h1>How it Started</h1>
-        <p>It wasn't just a random day. It was the day my world shifted axis.</p>
-        <p>From that first "hello" to the endless late-night talks, I knew I was in trouble (the good kind).</p>
-        <button class="btn" onclick="nextCard('card-memories')">See Memories &rarr;</button>
-    </div>
-
-    <div id="card-memories" class="card">
-        <h1>Us.</h1>
-        <div class="photo-stack">
-            <div class="photo"><img src="https://placehold.co/200x250/ff9a9e/white?text=Laughs" alt="1"></div>
-            <div class="photo"><img src="https://placehold.co/200x250/a18cd1/white?text=Trips" alt="2"></div>
-            <div class="photo"><img src="https://placehold.co/200x250/fad0c4/white?text=Love" alt="3"></div>
-        </div>
-        <p>Every moment with you is my favorite.</p>
-        <button class="btn" onclick="nextCard('card-reasons')">Why You? &rarr;</button>
-    </div>
-
-    <div id="card-reasons" class="card">
-        <h1>Why I Love You</h1>
-        <div class="reason-item">❤️ The way you smile when you see me</div>
-        <div class="reason-item">❤️ How you handle my crazy moods</div>
-        <div class="reason-item">❤️ That you always believe in me</div>
-        <button class="btn" onclick="nextCard('card-future')">Our Future &rarr;</button>
-    </div>
-
-    <div id="card-future" class="card">
-        <h1>Bucket List</h1>
-        <ul class="bucket-list">
-            <li><input type="checkbox" checked> Fall in Love</li>
-            <li><input type="checkbox"> Travel the World</li>
-            <li><input type="checkbox"> Adopt a Dog</li>
-            <li><input type="checkbox"> Grow Old Together</li>
-        </ul>
+    <div id="p1" class="card active">
+        <h1>Restricted Area</h1>
+        <p>⚠️ High-level romance detected.</p>
+        <p>Please enter the year we met to verify identity.</p>
+        <input type="tel" id="passcode" placeholder="YYYY" maxlength="4">
         <br>
-        <button class="btn" onclick="nextCard('card-question')">One Last Thing &rarr;</button>
+        <button class="btn" onclick="checkPasscode()">Unlock</button>
     </div>
 
-    <div id="card-question" class="card">
-        <h1>One Question...</h1>
-        <p>Will you be mine forever?</p>
+    <div id="p2" class="card">
+        <h1>Pop Quiz!</h1>
+        <p id="q-text">Loading question...</p>
+        <div id="q-options"></div>
+        <div style="margin-top: 15px; font-size: 0.8rem; color: #888;">Question <span id="q-number">1</span> of 3</div>
+    </div>
+
+    <div id="p3" class="card">
+        <h1>Match the Hearts</h1>
+        <p>Prove your focus. Find all 3 matching pairs to proceed.</p>
+        <div class="memory-grid" id="grid">
+            </div>
+        <p id="puzzle-status" style="font-size: 0.9rem; color: var(--primary);">Matches found: 0/3</p>
+    </div>
+
+    <div id="p4" class="card">
+        <h1>Our Story</h1>
+        <div class="timeline">
+            <div class="event">
+                <div class="date">The Beginning</div>
+                <div>We said "Hello" and I knew I was in trouble.</div>
+            </div>
+            <div class="event">
+                <div class="date">First Date</div>
+                <div>You looked amazing. I was nervous.</div>
+            </div>
+            <div class="event">
+                <div class="date">The Realization</div>
+                <div>The moment I knew I didn't want to be without you.</div>
+            </div>
+            <div class="event">
+                <div class="date">Now</div>
+                <div>Building a future, one day at a time.</div>
+            </div>
+        </div>
+        <button class="btn" onclick="nextPage('p5')">The Question &rarr;</button>
+    </div>
+
+    <div id="p5" class="card">
+        <h1>One Last Thing...</h1>
+        <p>Will you make me the happiest person and be my Valentine/Partner?</p>
         <div class="btn-group">
-            <button class="btn btn-yes" onclick="celebrate()">YES!</button>
-            <button class="btn btn-no" id="btn-no" onmouseover="runAway()">NO</button>
+            <button class="btn btn-yes" onclick="nextPage('p6')">YES!</button>
+            <button class="btn btn-no" id="btn-no" onmouseover="runAway()" ontouchstart="runAway()">NO</button>
         </div>
     </div>
 
-    <div id="card-final" class="card">
-        <h1>I Knew It! ❤️</h1>
-        <p>You didn't really have a choice, did you? 😉</p>
-        <p>I love you more than code, coffee, and WiFi.</p>
-        <p style="font-size: 0.8rem; opacity: 0.7;">(Screenshot this and send it to me)</p>
+    <div id="p6" class="card">
+        <h1>It's Official! ❤️</h1>
+        <p>By clicking "Yes", you have agreed to:</p>
+        <ul style="text-align: left; margin-bottom: 20px; padding-left: 20px;">
+            <li>Unlimited hugs.</li>
+            <li>Listening to my bad jokes.</li>
+            <li>Being the best thing in my life.</li>
+        </ul>
+        <div style="border-top: 1px dashed #aaa; margin-top: 20px; padding-top: 10px;">
+            <p style="font-family: 'Dancing Script'; font-size: 1.5rem;">Signed: <span id="partner-name">You</span></p>
+        </div>
+        <p style="font-size: 0.8rem; margin-top: 20px;">(Screenshot this!)</p>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const SECRET_CODE = "2024"; 
+        /* --------------------------------------------------
+           🔧 CONFIGURATION ZONE - EDIT THIS PART!
+           -------------------------------------------------- 
+        */
+        const CONFIG = {
+            passcode: "2025", // The year/code to unlock Page 1
+            partnerName: "Babe", // Will show on the contract signature
+            quiz: [
+                {
+                    question: "What is my favorite food?",
+                    options: ["Pizza", "Sushi", "Paneer", "Biryani"],
+                    answer: 0 // 0 is the first option, 1 is the second, etc.
+                },
+                {
+                    question: "Where was our first date?",
+                    options: ["Park", "Cinema", "Coffee Shop", "early morning on bed"],
+                    answer: 2
+                },
+                {
+                    question: "Who loves the other more?",
+                    options: ["Me", "You", "Equal", "Me (Obviously)"],
+                    answer: 3
+                }
+            ]
+        };
 
-        // --- LOGIC ---
+        /* --------------------------------------------------
+           SYSTEM LOGIC (DO NOT EDIT BELOW UNLESS YOU CODE)
+           -------------------------------------------------- */
+
+        // --- GLOBAL STATE ---
+        let currentQ = 0;
+        let matches = 0;
+
+        // --- PAGE 1: PASSCODE ---
         function checkPasscode() {
-            const input = document.getElementById('passcode').value;
-            if(input === SECRET_CODE) {
-                nextCard('card-story'); // Goes to the new Story page first
+            const input = document.getElementById('passcode');
+            if(input.value === CONFIG.passcode) {
+                nextPage('p2');
+                loadQuiz();
             } else {
-                const error = document.getElementById('error-msg');
-                error.style.display = 'block';
-                const card = document.getElementById('card-login');
-                card.style.transform = "translateX(10px)";
-                setTimeout(() => card.style.transform = "translateX(-10px)", 100);
-                setTimeout(() => card.style.transform = "translateX(0)", 200);
+                input.value = "";
+                input.placeholder = "Try Again";
+                document.getElementById('p1').classList.add('shake');
+                setTimeout(() => document.getElementById('p1').classList.remove('shake'), 500);
             }
         }
 
-        function nextCard(id) {
+        // --- PAGE 2: QUIZ ---
+        function loadQuiz() {
+            const q = CONFIG.quiz[currentQ];
+            document.getElementById('q-text').innerText = q.question;
+            document.getElementById('q-number').innerText = currentQ + 1;
+            
+            const optsDiv = document.getElementById('q-options');
+            optsDiv.innerHTML = "";
+            
+            q.options.forEach((opt, index) => {
+                const div = document.createElement('div');
+                div.className = 'quiz-option';
+                div.innerText = opt;
+                div.onclick = () => checkAnswer(index);
+                optsDiv.appendChild(div);
+            });
+        }
+
+        function checkAnswer(selected) {
+            if(selected === CONFIG.quiz[currentQ].answer) {
+                currentQ++;
+                if(currentQ < CONFIG.quiz.length) {
+                    loadQuiz();
+                } else {
+                    nextPage('p3');
+                    initMemoryGame();
+                }
+            } else {
+                document.getElementById('p2').classList.add('shake');
+                setTimeout(() => document.getElementById('p2').classList.remove('shake'), 500);
+            }
+        }
+
+        // --- PAGE 3: MEMORY GAME ---
+        const emojis = ['❤️', '❤️', '🌹', '🌹', '🧸', '🧸'];
+        let flippedCards = [];
+        let lockBoard = false;
+
+        function initMemoryGame() {
+            const grid = document.getElementById('grid');
+            // Shuffle
+            emojis.sort(() => 0.5 - Math.random());
+            
+            emojis.forEach(emoji => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.innerHTML = `<span class="hidden-content">${emoji}</span>`;
+                card.onclick = () => flipCard(card, emoji);
+                grid.appendChild(card);
+            });
+        }
+
+        function flipCard(card, emoji) {
+            if(lockBoard) return;
+            if(card.classList.contains('flipped')) return;
+
+            card.classList.add('flipped');
+            flippedCards.push({ card, emoji });
+
+            if(flippedCards.length === 2) {
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            lockBoard = true;
+            const [c1, c2] = flippedCards;
+
+            if(c1.emoji === c2.emoji) {
+                c1.card.classList.add('matched');
+                c2.card.classList.add('matched');
+                matches++;
+                document.getElementById('puzzle-status').innerText = `Matches found: ${matches}/3`;
+                flippedCards = [];
+                lockBoard = false;
+                if(matches === 3) {
+                    setTimeout(() => nextPage('p4'), 1000);
+                }
+            } else {
+                setTimeout(() => {
+                    c1.card.classList.remove('flipped');
+                    c2.card.classList.remove('flipped');
+                    flippedCards = [];
+                    lockBoard = false;
+                }, 1000);
+            }
+        }
+
+        // --- PAGE 5: RUNAWAY BUTTON ---
+        function runAway() {
+            const btn = document.getElementById('btn-no');
+            const card = document.getElementById('p5');
+            const rect = card.getBoundingClientRect();
+            
+            const newX = Math.random() * (rect.width - 80);
+            const newY = Math.random() * (rect.height - 60);
+            
+            btn.style.position = 'absolute';
+            btn.style.left = newX + 'px';
+            btn.style.top = newY + 'px';
+        }
+
+        // --- NAVIGATION ---
+        function nextPage(id) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
             document.getElementById(id).classList.add('active');
+            
+            if(id === 'p6') {
+                document.getElementById('partner-name').innerText = CONFIG.partnerName;
+                startConfetti();
+            }
         }
 
-        function runAway() {
-            const btnNo = document.getElementById('btn-no');
-            const card = document.getElementById('card-question');
-            const cardRect = card.getBoundingClientRect();
-            const maxLeft = cardRect.width - 100;
-            const maxTop = cardRect.height - 60;
-            btnNo.style.position = 'absolute';
-            btnNo.style.left = Math.random() * maxLeft + 'px';
-            btnNo.style.top = Math.random() * maxTop + 'px';
-        }
-
-        function celebrate() {
-            nextCard('card-final');
-            setInterval(createHeart, 20); // Faster rain!
-        }
-
-        // --- HEART RAIN ---
-        const canvas = document.getElementById('heart-canvas');
+        // --- VISUALS (PARTICLES) ---
+        const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -258,26 +406,35 @@
         function createHeart() {
             hearts.push({
                 x: Math.random() * canvas.width,
-                y: -20,
+                y: canvas.height + 20,
                 size: Math.random() * 20 + 10,
-                speed: Math.random() * 3 + 2,
-                color: `rgba(255, ${Math.random() * 100 + 150}, ${Math.random() * 100 + 150}, 0.6)`
+                speed: Math.random() * 2 + 1,
+                opacity: 1
             });
         }
 
-        function drawHearts() {
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < hearts.length; i++) {
-                const h = hearts[i];
+            for(let i=0; i<hearts.length; i++) {
+                let h = hearts[i];
+                ctx.fillStyle = `rgba(255, 255, 255, ${h.opacity})`;
+                ctx.font = `${h.size}px serif`;
                 ctx.fillText("❤️", h.x, h.y);
-                h.y += h.speed;
-                if (h.y > canvas.height) hearts.splice(i, 1);
+                h.y -= h.speed;
+                h.opacity -= 0.005;
+                if(h.opacity <= 0) hearts.splice(i, 1);
             }
-            requestAnimationFrame(drawHearts);
+            requestAnimationFrame(animate);
         }
-        setInterval(createHeart, 300);
-        drawHearts();
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        
+        setInterval(createHeart, 200);
+        animate();
+        
+        // Confetti for final page
+        function startConfetti() {
+            setInterval(createHeart, 50); // Faster hearts
+        }
+        
     </script>
 </body>
 </html>
