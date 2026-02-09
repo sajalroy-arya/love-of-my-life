@@ -20,7 +20,7 @@
             align-items: center;
         }
 
-        /* --- BACKGROUND ANIMATION (CANVAS) --- */
+        /* --- BACKGROUND ANIMATION --- */
         #heart-canvas {
             position: absolute;
             top: 0;
@@ -59,7 +59,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        p { color: #555; margin-bottom: 30px; font-size: 1.1rem; }
+        p { color: #555; margin-bottom: 30px; font-size: 1.1rem; line-height: 1.6; }
 
         /* --- INPUT FIELDS --- */
         input {
@@ -73,9 +73,7 @@
             font-size: 1.2rem;
             margin-bottom: 20px;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
-            transition: all 0.3s;
         }
-        input:focus { transform: scale(1.05); box-shadow: 0 5px 15px rgba(211, 51, 132, 0.2); }
 
         /* --- BUTTONS --- */
         .btn {
@@ -89,26 +87,36 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+            margin-top: 10px;
         }
         .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(214, 51, 132, 0.4); }
+
+        /* --- INTERACTIVE ELEMENTS --- */
+        .reason-item {
+            background: rgba(255,255,255,0.6);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .reason-item:hover { background: white; transform: scale(1.02); }
+
+        .bucket-list { text-align: left; padding-left: 20px; }
+        .bucket-list li { margin: 10px 0; list-style: none; }
+        .bucket-list input { width: auto; margin-right: 10px; transform: scale(1.5); }
 
         /* --- THE RUNAWAY BUTTON --- */
         .btn-group { position: relative; height: 60px; margin-top: 20px; }
         .btn-yes { position: absolute; left: 20%; transform: translateX(-50%); }
-        .btn-no { 
-            position: absolute; 
-            left: 60%; 
-            background: #888; 
-            transform: translateX(-50%);
-            transition: all 0.1s ease; /* Fast movement */
-        }
+        .btn-no { position: absolute; left: 60%; background: #888; transform: translateX(-50%); transition: all 0.1s ease; }
 
         /* --- PHOTO GALLERY --- */
-        .photo-stack { position: relative; height: 300px; margin: 20px 0; }
+        .photo-stack { position: relative; height: 250px; margin: 20px 0; }
         .photo {
             position: absolute;
-            width: 200px;
-            height: 250px;
+            width: 180px;
+            height: 220px;
             background: white;
             padding: 10px;
             padding-bottom: 40px;
@@ -120,21 +128,16 @@
             transition: transform 0.5s ease;
         }
         .photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
-        
-        /* Photo rotations */
         .photo:nth-child(1) { transform: translate(-50%, -50%) rotate(-10deg); z-index: 1; }
         .photo:nth-child(2) { transform: translate(-50%, -50%) rotate(5deg); z-index: 2; }
         .photo:nth-child(3) { transform: translate(-50%, -50%) rotate(-5deg); z-index: 3; }
-        
         .photo:hover { z-index: 10; transform: translate(-50%, -50%) scale(1.1) rotate(0deg); }
 
-        /* --- ANIMATIONS --- */
         @keyframes popIn {
             0% { transform: scale(0.5); opacity: 0; }
             80% { transform: scale(1.05); }
             100% { transform: scale(1); opacity: 1; }
         }
-
         .error { color: red; font-size: 0.9rem; margin-top: -15px; margin-bottom: 10px; display: none; }
     </style>
 </head>
@@ -146,10 +149,16 @@
         <h1>Hey You.</h1>
         <p>This area is restricted. Prove it's really you.</p>
         <p style="font-size: 0.9rem; margin-bottom: 10px;">When did it all start? (YYYY)</p>
-        
         <input type="text" id="passcode" placeholder="Enter the year..." maxlength="4">
         <div id="error-msg" class="error">Wrong answer. Try again.</div>
         <button class="btn" onclick="checkPasscode()">Unlock My Heart</button>
+    </div>
+
+    <div id="card-story" class="card">
+        <h1>How it Started</h1>
+        <p>It wasn't just a random day. It was the day my world shifted axis.</p>
+        <p>From that first "hello" to the endless late-night talks, I knew I was in trouble (the good kind).</p>
+        <button class="btn" onclick="nextCard('card-memories')">See Memories &rarr;</button>
     </div>
 
     <div id="card-memories" class="card">
@@ -160,13 +169,32 @@
             <div class="photo"><img src="https://placehold.co/200x250/fad0c4/white?text=Love" alt="3"></div>
         </div>
         <p>Every moment with you is my favorite.</p>
-        <button class="btn" onclick="nextCard('card-question')">Keep Going &rarr;</button>
+        <button class="btn" onclick="nextCard('card-reasons')">Why You? &rarr;</button>
+    </div>
+
+    <div id="card-reasons" class="card">
+        <h1>Why I Love You</h1>
+        <div class="reason-item">❤️ The way you smile when you see me</div>
+        <div class="reason-item">❤️ How you handle my crazy moods</div>
+        <div class="reason-item">❤️ That you always believe in me</div>
+        <button class="btn" onclick="nextCard('card-future')">Our Future &rarr;</button>
+    </div>
+
+    <div id="card-future" class="card">
+        <h1>Bucket List</h1>
+        <ul class="bucket-list">
+            <li><input type="checkbox" checked> Fall in Love</li>
+            <li><input type="checkbox"> Travel the World</li>
+            <li><input type="checkbox"> Adopt a Dog</li>
+            <li><input type="checkbox"> Grow Old Together</li>
+        </ul>
+        <br>
+        <button class="btn" onclick="nextCard('card-question')">One Last Thing &rarr;</button>
     </div>
 
     <div id="card-question" class="card">
         <h1>One Question...</h1>
         <p>Will you be mine forever?</p>
-        
         <div class="btn-group">
             <button class="btn btn-yes" onclick="celebrate()">YES!</button>
             <button class="btn btn-no" id="btn-no" onmouseover="runAway()">NO</button>
@@ -181,20 +209,17 @@
     </div>
 
     <script>
-        // --- CONFIGURATION (EDIT THIS) ---
-        const SECRET_CODE = "2024"; // Change this to your anniversary year or any code
-        
+        // --- CONFIGURATION ---
+        const SECRET_CODE = "2024"; 
+
         // --- LOGIC ---
-        
         function checkPasscode() {
             const input = document.getElementById('passcode').value;
-            const error = document.getElementById('error-msg');
-            
             if(input === SECRET_CODE) {
-                nextCard('card-memories');
+                nextCard('card-story'); // Goes to the new Story page first
             } else {
+                const error = document.getElementById('error-msg');
                 error.style.display = 'block';
-                // Shake animation effect
                 const card = document.getElementById('card-login');
                 card.style.transform = "translateX(10px)";
                 setTimeout(() => card.style.transform = "translateX(-10px)", 100);
@@ -207,40 +232,27 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // --- RUNAWAY BUTTON LOGIC ---
         function runAway() {
             const btnNo = document.getElementById('btn-no');
             const card = document.getElementById('card-question');
-            
-            // Get card dimensions
             const cardRect = card.getBoundingClientRect();
-            
-            // Calculate random position within the card
-            const maxLeft = cardRect.width - 100; // button width approx
-            const maxTop = cardRect.height - 60;  // button height approx
-            
-            const newLeft = Math.random() * maxLeft;
-            const newTop = Math.random() * maxTop;
-            
-            // Apply new position
+            const maxLeft = cardRect.width - 100;
+            const maxTop = cardRect.height - 60;
             btnNo.style.position = 'absolute';
-            btnNo.style.left = newLeft + 'px';
-            btnNo.style.top = newTop + 'px';
+            btnNo.style.left = Math.random() * maxLeft + 'px';
+            btnNo.style.top = Math.random() * maxTop + 'px';
         }
 
         function celebrate() {
             nextCard('card-final');
-            // Intensify rain
-            setInterval(createHeart, 50);
+            setInterval(createHeart, 20); // Faster rain!
         }
 
-        // --- CANVAS HEART RAIN ---
+        // --- HEART RAIN ---
         const canvas = document.getElementById('heart-canvas');
         const ctx = canvas.getContext('2d');
-        
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         const hearts = [];
 
         function createHeart() {
@@ -255,31 +267,17 @@
 
         function drawHearts() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
             for (let i = 0; i < hearts.length; i++) {
                 const h = hearts[i];
-                ctx.fillStyle = h.color;
-                ctx.font = h.size + "px serif";
                 ctx.fillText("❤️", h.x, h.y);
-                
                 h.y += h.speed;
-                
-                if (h.y > canvas.height) {
-                    hearts.splice(i, 1);
-                    i--;
-                }
+                if (h.y > canvas.height) hearts.splice(i, 1);
             }
             requestAnimationFrame(drawHearts);
         }
-
-        setInterval(createHeart, 300); // Add a heart every 300ms
+        setInterval(createHeart, 300);
         drawHearts();
-
-        // Handle resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
     </script>
 </body>
 </html>
